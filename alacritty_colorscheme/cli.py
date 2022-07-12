@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
-import os
-
 from tap import Tap
-from os.path import expanduser, isfile, join
+from os import walk
+from os.path import expanduser, isfile, isdir, join, relpath
 from typing import List, Optional, cast
 try:
     from typing import Literal  # type: ignore
@@ -92,18 +91,20 @@ def create_parser() -> TypedArgumentParser:
 
 def get_files_in_directory(path: str) -> Optional[List[str]]:
     expanded_path = expanduser(path)
+    if not isdir(expanded_path):
+        return None
     try:
         onlyfiles = []
-        for root, _dirs, files in os.walk(expanded_path, followlinks=True):
+        for root, _dirs, files in walk(expanded_path, followlinks=True):
             for file in files:
                 full_path = join(root, file)
                 if file.endswith(('.yml', '.yaml')) and isfile(full_path):
-                    # NOTE: use str.removeprefix in Python >= 3.9
-                    filename = full_path[len(expanded_path):]
+                    filename = relpath(full_path, expanded_path)
                     onlyfiles.append(filename)
         onlyfiles.sort()
         return onlyfiles
-    except OSError:
+    except OSError as e:
+        print(e)
         return None
 
 
@@ -111,7 +112,7 @@ def handle_args(args: TypedArgumentParser) -> None:
     if args._subparser_name == 'list':
         files = get_files_in_directory(args.colorscheme_dir)
         if files is None:
-            raise RuntimeError(f'Could not find directory: {args.colorscheme_dir}')
+            raise RuntimeError(f'Could not find colorscheme directory: {args.colorscheme_dir}')
         for file in files:
             print(file)
     elif args._subparser_name == 'status':
