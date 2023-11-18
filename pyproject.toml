@@ -21,7 +21,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8"
 "ruamel.yaml" = "^0.16.10"
 typed-argument-parser = "^1.6.3"
 pynvim = "^0.4.2"
