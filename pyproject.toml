@@ -28,7 +28,7 @@ pynvim = "^0.4.2"
 typing-extensions = "^3.10.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+pytest = "^7.4.3"
 pyright = "^0.0.7"
 flake8 = "^3.9.2"
 
