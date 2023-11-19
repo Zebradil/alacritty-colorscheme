@@ -12,8 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # Officially supported Python versions: https://devguide.python.org/versions/
-        python-version: [3.8, 3.9, 3.10, 3.11, 3.12]
+        # Officially supported Python versions:
+        # https://devguide.python.org/versions/
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
       - name: Install poetry
